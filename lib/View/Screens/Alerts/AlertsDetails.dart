@@ -1,0 +1,125 @@
+// ignore_for_file: camel_case_types
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:webullish/View/Widgets/videoImage.dart';
+import 'package:webullish/View/Widgets/videoPlayer.dart';
+import 'package:webullish/utils/AppColors.dart';
+
+// ignore: must_be_immutable
+class alertsDetails extends StatelessWidget {
+  late String image, video, title, senttime, body;
+  alertsDetails(
+      {Key? key,
+      required this.image,
+      required this.video,
+      required this.body,
+      required this.senttime,
+      required this.title})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      backgroundColor: AppColors.color1,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            image.isEmpty
+                ? InkWell(
+                    onTap: () {
+                      Get.to(() => OneVideoCtrl(name: '', url: video));
+                    },
+                    child: videoimageviw(link: video))
+                : Image.network(
+                    image,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                  ),
+            SizedBox(
+              height: 50,
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Information name:',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.gold),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                title,
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Description : ',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.gold),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    body,
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Sent Time : ',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.gold),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      senttime,
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
