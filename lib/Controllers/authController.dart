@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:webullish/Controllers/homeController.dart';
 import 'package:webullish/Models/CountriesModel.dart';
 import 'package:webullish/Models/UserModel.dart';
+import 'package:webullish/Services/StorageKey.dart';
 import 'package:webullish/Services/apiConst.dart';
 import 'package:webullish/View/Screens/Auth/entercode.dart';
+import 'package:webullish/View/Screens/Auth/login.dart';
 import 'package:webullish/View/bottomNavBar.dart';
 
 import '../Services/apiServices.dart';
 import '../utils/AppHelper.dart';
 
 class authController extends GetxController {
+  GetStorage _box = GetStorage();
   List<CountriesModel> countriesList = [];
   List<Cities> citiesList = [];
   String country = 'Select Country';
@@ -24,22 +27,24 @@ class authController extends GetxController {
   signin({required email, required password}) async {
     _loading();
     User model = User(email: email, password: password);
-    var prefs = await SharedPreferences.getInstance();
 
     try {
       await apiServices()
-          .postRequestMap(url: apiConst.logIn, body: model.toJson())
+          .authRequest(
+        url: apiConst.logIn,
+        credintial: model.toJson(),
+      )
           .then((value) async {
         if (value.isNotEmpty && value['error'] != null) {
           AppHelper.errorsnackbar("signin:${value['error']}");
 
           return;
         }
-        await prefs.setString('email', email.toString());
-        await prefs.setString('pass', email.toString());
-        await prefs.setBool('islogin', true);
+        _box.write(StorageKey.credintal, {
+          "email": email.toString().trim(),
+          "password": password.toString().trim()
+        });
 
-        saveData(token: value['access_token']);
         homeController().handleBootmNabBar(0);
 
         Get.offAll(() => bottomNavBar());
@@ -53,7 +58,6 @@ class authController extends GetxController {
   }
 
   signup({required name, required email, required password}) async {
-    var prefs = await SharedPreferences.getInstance();
     _loading();
     User model = User(
         name: name,
@@ -65,17 +69,22 @@ class authController extends GetxController {
         countryId: countryId);
     try {
       await apiServices()
-          .postRequestMap(url: apiConst.signUp, body: model.toJson())
+          .authRequest(
+        url: apiConst.signUp,
+        credintial: model.toJson(),
+      )
           .then((value) async {
         if (value.isNotEmpty && value['error'] != null) {
           AppHelper.errorsnackbar("signup:${value['error']}");
 
           return;
         }
-        await prefs.setString('email', email.toString());
-        await prefs.setString('pass', email.toString());
-        await prefs.setBool('islogin', true);
-        saveData(token: value['access_token']);
+        _box.write(StorageKey.credintal, {
+          "email": email.toString().trim(),
+          "password": password.toString().trim()
+        });
+        _box.write(StorageKey.userdata, value);
+        _box.write(StorageKey.token, value['access_token']);
         homeController().handleBootmNabBar(0);
         Get.offAll(() => bottomNavBar());
 
@@ -90,7 +99,7 @@ class authController extends GetxController {
   getCountries() async {
     try {
       countriesList.clear();
-      await apiServices().getRequestMap(apiConst.countries).then((value) {
+      await apiServices().getRequestMap(url: apiConst.countries).then((value) {
         if (value.isNotEmpty && value['error'] != null) {
           //    AppHelper.errorsnackbar("Countries:${value['error']}");
 
@@ -119,24 +128,24 @@ class authController extends GetxController {
         ));
   }
 
-  saveData({required token}) async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userjwt', token.toString());
-  }
-
   int? code;
   forgetPass(email) async {
-    await apiServices().postRequestMap(
-        url: 'api/password/email', body: {'email': email}).then((value) {
-      print(value);
-      if (value.isNotEmpty && value['error'] != null) {
-        //    AppHelper.errorsnackbar("Countries:${value['error']}");
-
-        return;
-      }
-      code = value['code'];
-      Get.to(() => entercode());
-    });
+    try {
+      await apiServices().postRequestMap(
+          url: 'api/password/email', body: {'email': email}).then((value) {
+        print(value);
+        if (value['error']['message'].toString() ==
+            'User successfully sent code check it') {
+          AppHelper.succssessnackbar(value['error']['message'].toString());
+          code = value['code'];
+          Get.to(() => entercode());
+          return;
+        }
+        AppHelper.errorsnackbar(value['message'].toString());
+      });
+    } catch (e) {
+      print(e);
+    }
     update();
   }
 
@@ -146,9 +155,10 @@ class authController extends GetxController {
       'password': pass,
       'password_confirmation': repass
     }).then((value) {
-      if (value.isNotEmpty && value['error'] != null) {
-        //    AppHelper.errorsnackbar("Countries:${value['error']}");
-
+      print(value);
+      if (value['message'] == 'Password reset successfully') {
+        AppHelper.succssessnackbar("${value['message']}");
+        Get.to(() => login());
         return;
       }
       code = value['code'];

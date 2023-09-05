@@ -83,7 +83,8 @@ class login extends StatelessWidget {
               ),
               InkWell(
                 onTap: () async {
-                  Get.to(() => bottomNavBar());
+                  controller.signin(
+                      email: 'guest@guest.com', password: '12345678');
                 },
                 child: button(
                     color: AppColors.gold,

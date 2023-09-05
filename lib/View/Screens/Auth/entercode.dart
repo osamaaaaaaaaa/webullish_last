@@ -51,12 +51,12 @@ class entercode extends StatelessWidget {
                   IsPass: false),
               TextFieldWidget(
                   controller: pass,
-                  title: 'Enter Code',
+                  title: 'Enter password',
                   iconData: Icons.numbers,
                   IsPass: false),
               TextFieldWidget(
                   controller: repass,
-                  title: 'Enter Code',
+                  title: 'Reenter password',
                   iconData: Icons.numbers,
                   IsPass: false),
               SizedBox(

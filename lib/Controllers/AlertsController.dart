@@ -1,13 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webullish/Models/AlertModel.dart';
 import 'package:webullish/Models/SubscribeModel.dart';
 import 'package:webullish/Services/apiConst.dart';
 import 'package:webullish/Services/apiServices.dart';
 
 import '../Models/UserModel.dart';
-import '../utils/AppHelper.dart';
 
 class alertsController extends GetxController {
   List<AlertModel> alertsList = [];
@@ -23,7 +21,9 @@ class alertsController extends GetxController {
   getAlerts() async {
     loading = true;
     alertsList.clear();
-    await apiServices().getRequestMap(apiConst.getNotification).then((value) {
+    await apiServices()
+        .getRequestMap(url: apiConst.getNotification)
+        .then((value) {
       if (value.isNotEmpty && value['error'] != null) {
         //   AppHelper.errorsnackbar("alerts :${value['error']}");
 
@@ -43,13 +43,11 @@ class alertsController extends GetxController {
   }
 
   getUserProfile() async {
-    var pref = await SharedPreferences.getInstance();
-    if (pref.getString('userjwt') == null) {
-      return;
-    }
     try {
       await apiServices()
-          .getprofile(apiConst.userByID, pref.getString('userjwt'))
+          .getRequestMap(
+        url: apiConst.userByID,
+      )
           .then((value) {
         if (value.isNotEmpty && value['error'] != null) {
           //      AppHelper.errorsnackbar("user:${value['error']}");
@@ -68,14 +66,9 @@ class alertsController extends GetxController {
   SubscribeModel? subscribeModel;
   bool IsSubscribe = false;
   isSubscribe() async {
-    var pref = await SharedPreferences.getInstance();
-    var jwt = await pref.getString('userjwt');
-    print(jwt);
-    if (jwt == null) {
-      return;
-    }
     try {
-      await apiServices().postProfile(apiConst.getSubscribe, jwt).then((value) {
+      await apiServices()
+          .postRequestMap(url: apiConst.getSubscribe, body: {}).then((value) {
         if (value.isNotEmpty && value['error'] != null) {
           //AppHelper.errorsnackbar("user:${value['error']}");
           print("user:${value['error']}");

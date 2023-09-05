@@ -51,6 +51,7 @@ dependencies:
   flutter_paypal: ^0.2.0
   flutter_launcher_icons:
   marquee: ^2.2.3
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:

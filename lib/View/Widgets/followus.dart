@@ -85,7 +85,7 @@ Widget _widget({
 
 Future<void> _launchUrl(url) async {
   try {
-    await launchUrl(url, mode: LaunchMode.externalApplication);
+    await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
   } catch (e) {
     AppHelper.errorsnackbar(e.toString());
   }

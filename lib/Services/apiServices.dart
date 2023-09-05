@@ -1,47 +1,22 @@
 import 'dart:convert';
 
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webullish/Services/apiConst.dart';
 
+import 'StorageKey.dart';
+
 class apiServices {
-  AuthRequest({required String url}) async {
-    var prefs = await SharedPreferences.getInstance();
-
-    var email = prefs.get('email');
-    var pass = prefs.get('pass');
-    var body = email == null
-        ? {'email': 'guest@guest.com', 'password': '12345678'}
-        : {'email': email, 'password': pass};
-
+  GetStorage _box = GetStorage();
+  Future<List<dynamic>> getRequestList({required url}) async {
+    var jwt_token = _box.read(StorageKey.token);
     try {
-      var response = await http.post(Uri.parse(apiConst.baseUrl + url),
-          body: json.encode(body),
-          headers: {
-            'Content-Type': 'application/json',
-          });
-
-      if (response.statusCode == 200) {
-        var responsebody = jsonDecode(response.body);
-
-        await prefs.setString('userjwt', responsebody['access_token']);
-      }
-    } catch (e) {
-      print(e);
-      return e;
-    }
-  }
-
-  Future<List<dynamic>> getRequest(String url) async {
-    var prefs = await SharedPreferences.getInstance();
-    var jwt_token = await prefs.getString('userjwt');
-
-    try {
-      var response = await http.get(Uri.parse(apiConst.baseUrl + url),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $jwt_token'
-          });
+      var response =
+          await http.get(Uri.parse(apiConst.baseUrl + url), headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $jwt_token'
+      });
 
       if (response.statusCode == 200) {
         var responsebody = jsonDecode(response.body);
@@ -50,11 +25,14 @@ class apiServices {
       }
 
       if (response.statusCode == 401) {
-        // AuthRequest(url: apiConst.logIn);
-        // getRequest(url);
+        // AuthRequest(url: apiConst.authEndpoints.login_admin);
+        // count++;
+        // getRequestList(url: url);
         var responsebody = jsonDecode(response.body);
 
-        return responsebody;
+        return [
+          {'error': responsebody}
+        ];
       } else {
         return [
           {'error': response.statusCode}
@@ -67,14 +45,13 @@ class apiServices {
     }
   }
 
-  Future<Map<dynamic, dynamic>> getRequestMap(String url) async {
-    var prefs = await SharedPreferences.getInstance();
-    var jwt_token = await prefs.getString('userjwt');
+  Future<Map<dynamic, dynamic>> getRequestMap({required url}) async {
+    var jwt_token = _box.read(StorageKey.token);
 
     try {
       var response = await http.get(Uri.parse(apiConst.baseUrl + url),
           headers: {
-            'Content-Type': 'application/json',
+            'Accept': 'application/json',
             'Authorization': 'Bearer $jwt_token'
           });
 
@@ -85,123 +62,102 @@ class apiServices {
       }
 
       if (response.statusCode == 401) {
-        AuthRequest(url: apiConst.logIn);
-        getRequestMap(url);
+        // AuthRequest(url: apiConst.authEndpoints.login_admin);
+        // getRequestMap(url: url);
         var responsebody = jsonDecode(response.body);
 
-        return responsebody;
+        return {'error': response.body};
       } else {
         return {'error': response.statusCode};
       }
     } catch (e) {
-      return {"error": e};
-    }
-  }
-
-  Future<Map<dynamic, dynamic>> getprofile(String url, jwt) async {
-    var prefs = await SharedPreferences.getInstance();
-    var jwt_token = jwt;
-
-    try {
-      var response = await http.get(Uri.parse(apiConst.baseUrl + url),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $jwt_token'
-          });
-
-      if (response.statusCode == 200) {
-        var responsebody = jsonDecode(response.body);
-
-        return responsebody;
-      }
-
-      if (response.statusCode == 401) {
-        AuthRequest(url: apiConst.logIn);
-        // getRequest(url);
-        var responsebody = jsonDecode(response.body);
-
-        return responsebody;
-      } else {
-        return {'error': jsonDecode(response.body)};
-      }
-    } catch (e) {
-      return {"error": e};
-    }
-  }
-
-  Future<Map<dynamic, dynamic>> postProfile(String url, jwt) async {
-    var prefs = await SharedPreferences.getInstance();
-    var jwt_token = jwt;
-
-    try {
-      var response = await http.post(Uri.parse(apiConst.baseUrl + url),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $jwt_token'
-          });
-
-      if (response.statusCode == 200) {
-        var responsebody = jsonDecode(response.body);
-
-        return responsebody;
-      }
-
-      if (response.statusCode == 401) {
-        //   AuthRequest(url: apiConst.logIn);
-        //     postProfile(url, jwt);
-        var responsebody = jsonDecode(response.body);
-
-        return responsebody;
-      } else {
-        return {'error': jsonDecode(response.body)};
-      }
-    } catch (e) {
+      print("apierror" + e.toString());
       return {"error": e};
     }
   }
 
   Future<Map<dynamic, dynamic>> postRequestMap(
-      {required url, required body}) async {
-    var prefs = await SharedPreferences.getInstance();
-    var jwt_token = prefs.getString('userjwt');
+      {required url, required Map<dynamic, dynamic> body}) async {
+    var jwt_token = _box.read(StorageKey.token);
+
+    try {
+      var response = await http.post(Uri.parse(apiConst.baseUrl + url),
+          body: json.encode(body),
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $jwt_token',
+            'Content-Type': 'application/json',
+          });
+
+      if (response.statusCode == 200) {
+        var responsebody = jsonDecode(response.body);
+
+        return responsebody;
+      }
+
+      if (response.statusCode == 401) {
+        // AuthRequest(url: apiConst.authEndpoints.login_admin);
+
+        // postRequestMap(url: url, body: body);
+        var responsebody = jsonDecode(response.body);
+
+        return {'error': responsebody};
+      } else {
+        return {'error': jsonDecode(response.body)};
+      }
+    } catch (e) {
+      return {"error": e};
+    }
+  }
+
+  Future<Map<dynamic, dynamic>> postRequestList(
+      {required url, required Map<dynamic, dynamic> body}) async {
+    var jwt_token = _box.read(StorageKey.token);
+
+    try {
+      var response =
+          await http.post(Uri.parse(url), body: json.encode(body), headers: {
+        'Accept': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $jwt_token'
+      });
+      if (response.statusCode == 200) {
+        var responsebody = jsonDecode(response.body);
+        return responsebody;
+      }
+
+      if (response.statusCode == 401) {
+        // AuthRequest(url: apiConst.authEndpoints.login_admin);
+
+        // postRequestList(url: url, body: body);
+        var responsebody = jsonDecode(response.body);
+        return {'error': response.body};
+      } else {
+        return {"error": response.statusCode};
+      }
+    } catch (e) {
+      return {"error": e};
+    }
+  }
+
+  Future<Map<dynamic, dynamic>> authRequest(
+      {required String url, Map<dynamic, dynamic>? credintial}) async {
+    var userData = _box.read(StorageKey.userdata);
+
+    var body = credintial ?? userData;
 
     try {
       var response = await http.post(Uri.parse(apiConst.baseUrl + url),
           body: json.encode(body),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer $jwt_token'
+            'Accept': 'application/json; charset=UTF-8',
           });
 
       if (response.statusCode == 200) {
         var responsebody = jsonDecode(response.body);
+        _box.write(StorageKey.token, responsebody['access_token']);
+        _box.write(StorageKey.userdata, responsebody);
 
-        return responsebody;
-      }
-
-      if (response.statusCode == 401) {
-        AuthRequest(url: apiConst.logIn);
-        postRequestMap(url: url, body: body);
-        var responsebody = jsonDecode(response.body);
-
-        return responsebody;
-      } else {
-        return {'error': response.statusCode};
-      }
-    } catch (e) {
-      return {"error": e};
-    }
-  }
-
-  Future<Map<dynamic, dynamic>> postRequest(
-      String url, Map map, String jwt) async {
-    try {
-      var response =
-          await http.post(Uri.parse(url), body: json.encode(map), headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      });
-      if (response.statusCode == 200) {
-        var responsebody = jsonDecode(response.body);
         return responsebody;
       } else {
         return {"error": response.statusCode};
@@ -218,7 +174,7 @@ class apiServices {
     try {
       var response = await http.put(Uri.parse('$url'),
           headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
+            'Accept': 'application/json; charset=UTF-8',
           },
           body: json.encode(body));
 
@@ -238,7 +194,7 @@ class apiServices {
     try {
       var response =
           await http.delete(Uri.parse('$url'), headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
       });
 
       if (response.statusCode == 401) {}

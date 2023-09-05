@@ -42,7 +42,7 @@ class homeController extends GetxController {
     gettrainingAds();
     getWeeklyMagazine();
     getAcheviments();
-    getTeams();
+    //   getTeams();
     getPerformance();
     getUserProfile();
     getInstaLive();
@@ -52,14 +52,8 @@ class homeController extends GetxController {
     getSocialPages();
   }
   getUserProfile() async {
-    var pref = await SharedPreferences.getInstance();
-    if (pref.getString('userjwt') == null) {
-      return;
-    }
     try {
-      await apiServices()
-          .getprofile(apiConst.userByID, pref.getString('userjwt'))
-          .then((value) {
+      await apiServices().getRequestMap(url: apiConst.userByID).then((value) {
         if (value.isNotEmpty && value['error'] != null) {
           //      AppHelper.errorsnackbar("user:${value['error']}");
 
@@ -128,7 +122,7 @@ class homeController extends GetxController {
 
   getDailyAds() async {
     dailyAdsList.clear();
-    await apiServices().getRequest(apiConst.dailyAds).then((value) {
+    await apiServices().getRequestList(url: apiConst.dailyAds).then((value) {
       if (value.isNotEmpty && value[0]['error'] != null) {
         //  AppHelper.errorsnackbar("Daily Ads:${value[0]['error']}");
 
@@ -147,7 +141,9 @@ class homeController extends GetxController {
   List<trainingModel> traininList = [];
   gettrainingAds() async {
     traininList.clear();
-    await apiServices().getRequest('api/training_video/show_all').then((value) {
+    await apiServices()
+        .getRequestList(url: 'api/training_video/show_all')
+        .then((value) {
       if (value.isNotEmpty && value[0]['error'] != null) {
         //  AppHelper.errorsnackbar("Daily Ads:${value[0]['error']}");
 
@@ -165,7 +161,9 @@ class homeController extends GetxController {
 
   getWeeklyMagazine() async {
     weeklyMagazineList.clear();
-    await apiServices().getRequest(apiConst.weeklyMagazine).then((value) {
+    await apiServices()
+        .getRequestList(url: apiConst.weeklyMagazine)
+        .then((value) {
       if (value.isNotEmpty && value[0]['error'] != null) {
         //  AppHelper.errorsnackbar("weekly Magazine:${value[0]['error']}");
 
@@ -183,7 +181,7 @@ class homeController extends GetxController {
 
   getAcheviments() async {
     achevimentList.clear();
-    await apiServices().getRequest(apiConst.achievment).then((value) {
+    await apiServices().getRequestList(url: apiConst.achievment).then((value) {
       if (value.isNotEmpty && value[0]['error'] != null) {
         //  AppHelper.errorsnackbar("Achievment :${value[0]['error']}");
 
@@ -201,7 +199,7 @@ class homeController extends GetxController {
 
   getTeams() async {
     teamList.clear();
-    await apiServices().getRequest(apiConst.teams).then((value) {
+    await apiServices().getRequestList(url: apiConst.teams).then((value) {
       if (value.isNotEmpty && value[0]['error'] != null) {
         //  AppHelper.errorsnackbar("Teams:${value[0]['error']}");
 
@@ -220,7 +218,9 @@ class homeController extends GetxController {
   getPerformance() async {
     try {
       performanceList.clear();
-      await apiServices().getRequestMap(apiConst.performance).then((value) {
+      await apiServices()
+          .getRequestMap(url: apiConst.performance)
+          .then((value) {
         if (value.isNotEmpty && value['error'] != null) {
           //    AppHelper.errorsnackbar("Performance:${value['error']}");
 
@@ -258,7 +258,9 @@ class homeController extends GetxController {
 
   getInstaLive() async {
     instalive.clear();
-    await apiServices().getRequest('api/liveinstagram/show_all').then((value) {
+    await apiServices()
+        .getRequestList(url: 'api/liveinstagram/show_all')
+        .then((value) {
       if (value.isNotEmpty && value[0]['error'] != null) {
         //  AppHelper.errorsnackbar("Teams:${value[0]['error']}");
 
@@ -276,7 +278,9 @@ class homeController extends GetxController {
 
   getfaceLive() async {
     facebookLive.clear();
-    await apiServices().getRequest('api/livefacebook/show_all').then((value) {
+    await apiServices()
+        .getRequestList(url: 'api/livefacebook/show_all')
+        .then((value) {
       if (value.isNotEmpty && value[0]['error'] != null) {
         //  AppHelper.errorsnackbar("Teams:${value[0]['error']}");
 
@@ -294,7 +298,9 @@ class homeController extends GetxController {
 
   gettwitterLive() async {
     twitterlive.clear();
-    await apiServices().getRequest('api/livetwitter/show_all').then((value) {
+    await apiServices()
+        .getRequestList(url: 'api/livetwitter/show_all')
+        .then((value) {
       if (value.isNotEmpty && value[0]['error'] != null) {
         //  AppHelper.errorsnackbar("Teams:${value[0]['error']}");
 
@@ -312,7 +318,9 @@ class homeController extends GetxController {
 
   getyoutubeLive() async {
     youtubelive.clear();
-    await apiServices().getRequest('api/liveyoutube/show_all').then((value) {
+    await apiServices()
+        .getRequestList(url: 'api/liveyoutube/show_all')
+        .then((value) {
       if (value.isNotEmpty && value[0]['error'] != null) {
         //  AppHelper.errorsnackbar("Teams:${value[0]['error']}");
 
@@ -331,7 +339,7 @@ class homeController extends GetxController {
   getTopNoti() async {
     youtubelive.clear();
     await apiServices()
-        .getRequest('api/top_notification/show_all')
+        .getRequestList(url: 'api/top_notification/show_all')
         .then((value) {
       if (value.isNotEmpty && value[0]['error'] != null) {
         //  AppHelper.errorsnackbar("top:${value}");
@@ -352,7 +360,7 @@ class homeController extends GetxController {
   List<FollowUpModel> socilaList = [];
   getSocialPages() async {
     socilaList.clear();
-    await apiServices().getRequest(apiConst.follow).then((value) {
+    await apiServices().getRequestList(url: apiConst.follow).then((value) {
       if (value.isNotEmpty && value[0]['error'] != null) {
         //  AppHelper.errorsnackbar("Teams:${value[0]['error']}");
 

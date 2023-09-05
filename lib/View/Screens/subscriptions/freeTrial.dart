@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:webullish/Controllers/subscribeController.dart';
 import 'package:webullish/View/Screens/Auth/register.dart';
-import 'package:webullish/View/Screens/subscriptions/subscribe.dart';
 import 'package:webullish/View/Widgets/TopAppBar.dart';
 import 'package:webullish/View/Widgets/button.dart';
 import 'package:webullish/utils/AppColors.dart';

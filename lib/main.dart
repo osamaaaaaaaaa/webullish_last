@@ -24,7 +24,7 @@ Widget? widget;
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  apiServices().AuthRequest(url: apiConst.logIn);
+  islogIn();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   messaging = FirebaseMessaging.instance;
   Stripe.publishableKey = stripePublishableKey;
@@ -38,6 +38,14 @@ Future<void> main(List<String> args) async {
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
+}
+
+islogIn() async {
+  await apiServices().authRequest(url: apiConst.logIn).then((value) {
+    if (value['error'] == null) {
+      islogin = true;
+    }
+  });
 }
 
 class app extends StatelessWidget {

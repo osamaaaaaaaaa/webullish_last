@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:marquee/marquee.dart';
 import 'package:marquee_text/marquee_text.dart';
 
 class BreakingNotifications extends StatelessWidget {

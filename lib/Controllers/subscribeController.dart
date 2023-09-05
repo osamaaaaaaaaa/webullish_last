@@ -6,10 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webullish/Services/apiConst.dart';
 import 'package:webullish/View/Screens/Auth/register.dart';
-import 'package:webullish/View/Screens/Home/home.dart';
 import 'package:webullish/View/bottomNavBar.dart';
 import 'package:webullish/utils/AppHelper.dart';
 
@@ -23,13 +21,11 @@ class subscribeController extends GetxController {
   }
 
   getUserProfile() async {
-    var pref = await SharedPreferences.getInstance();
-    if (pref.getString('userjwt') == null) {
-      return;
-    }
     try {
       await apiServices()
-          .getprofile(apiConst.userByID, await pref.getString('userjwt'))
+          .getRequestMap(
+        url: apiConst.userByID,
+      )
           .then((value) {
         if (value.isNotEmpty && value['error'] != null) {
           //AppHelper.errorsnackbar("user:${value['error']}");

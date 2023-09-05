@@ -32,8 +32,8 @@ class User {
   String? emailVerifiedAt;
   String? type;
   String? password;
-  Null? code;
-  Null? expireAt;
+  String? code;
+  String? expireAt;
   String? status;
   int? countryId;
   int? cityId;
@@ -42,7 +42,7 @@ class User {
   int? stripeId;
   Null? pmType;
   Null? pmLastFour;
-  Null? trialEndsAt;
+  String? trialEndsAt;
   String? country;
   String? city;
 

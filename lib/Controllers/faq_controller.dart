@@ -16,7 +16,7 @@ class FaqController extends GetxController {
     faqsLoading = true;
     update();
 
-    await apiServices().getRequest('api/faq/show_all').then((value) {
+    await apiServices().getRequestList(url: 'api/faq/show_all').then((value) {
       print(value);
       if (value.isNotEmpty && value[0]['error'] != null) {
         //  AppHelper.errorsnackbar("Teams:${value[0]['error']}");

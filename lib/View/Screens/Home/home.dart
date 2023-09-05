@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webullish/Controllers/homeController.dart';
 import 'package:webullish/View/Screens/Auth/login.dart';
-import 'package:webullish/View/Screens/Auth/register.dart';
 import 'package:webullish/View/Screens/Magazine/MagazineDetails.dart';
 import 'package:webullish/View/Screens/settings/deleteAccount.dart';
 import 'package:webullish/View/Widgets/Acheviment.dart';
@@ -417,8 +417,7 @@ _setting({required context}) => showMaterialModalBottomSheet(
             children: [
               InkWell(
                 onTap: () async {
-                  var prefs = await SharedPreferences.getInstance();
-                  prefs.clear();
+                  GetStorage().erase();
                   Get.offAll(() => login());
                 },
                 child: Row(

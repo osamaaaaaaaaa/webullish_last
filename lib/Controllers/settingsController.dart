@@ -19,13 +19,11 @@ class settingsController extends GetxController {
     getUserProfile();
   }
   getUserProfile() async {
-    var pref = await SharedPreferences.getInstance();
-    if (pref.getString('userjwt') == null) {
-      return;
-    }
     try {
       await apiServices()
-          .getprofile(apiConst.userByID, pref.getString('userjwt'))
+          .getRequestMap(
+        url: apiConst.userByID,
+      )
           .then((value) {
         if (value.isNotEmpty && value['error'] != null) {
           //      AppHelper.errorsnackbar("user:${value['error']}");
@@ -39,7 +37,7 @@ class settingsController extends GetxController {
         update();
       });
     } catch (e) {
-      print(e);
+      print("err" + e.toString());
     }
   }
 
@@ -114,8 +112,7 @@ class settingsController extends GetxController {
     var prefs = await SharedPreferences.getInstance();
 
     await apiServices()
-        .postRequestMap(url: 'api/delete', body: null)
-        .then((value) => {
+        .postRequestMap(url: 'api/delete', body: {}).then((value) => {
               if (value['error'] == null)
                 {
                   if (value['status'] == true)
