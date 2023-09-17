@@ -65,17 +65,23 @@ class alertsController extends GetxController {
 
   SubscribeModel? subscribeModel;
   bool IsSubscribe = false;
+  bool IssubLoding = false;
   isSubscribe() async {
+    IssubLoding = true;
     try {
       await apiServices()
           .postRequestMap(url: apiConst.getSubscribe, body: {}).then((value) {
         if (value.isNotEmpty && value['error'] != null) {
           //AppHelper.errorsnackbar("user:${value['error']}");
           print("user:${value['error']}");
-
+          IssubLoding = false;
+          update();
           return;
         }
         if (value['subscriptions'] == null) {
+          IssubLoding = false;
+          update();
+
           return;
         }
         print(value);
@@ -88,9 +94,14 @@ class alertsController extends GetxController {
           FirebaseMessaging.instance.unsubscribeFromTopic('topic');
         }
         // print(IsSubscribe);
+        IssubLoding = false;
+
         update();
       });
     } catch (e) {
+      IssubLoding = false;
+      update();
+
       print(e);
     }
   }

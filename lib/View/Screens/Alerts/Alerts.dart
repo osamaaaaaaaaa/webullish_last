@@ -18,95 +18,113 @@ class alerts extends StatelessWidget {
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : controller.IsSubscribe
-                  ? SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 50,
-                          ),
-                          TopAppBar(title: "Alerts"),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            height: MediaQuery.of(context).size.height - 100,
-                            child: ListView.builder(
-                              itemCount: controller.alertsList.length,
-                              itemBuilder: (context, index) => InkWell(
-                                onTap: () {
-                                  Get.to(() => alertsDetails(
-                                      image: controller.alertsList[index].image
-                                          .toString(),
-                                      video: controller.alertsList[index].video
-                                          .toString(),
-                                      body: controller
-                                          .alertsList[index].description
-                                          .toString(),
-                                      senttime: controller
-                                          .alertsList[index].sendTime
-                                          .toString(),
-                                      title: controller.alertsList[index].name
-                                          .toString()));
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.all(10),
-                                  child: Row(
-                                    children: [
-                                      ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          child: controller.alertsList[index]
-                                                      .image !=
-                                                  null
-                                              ? Image.network(
-                                                  controller
-                                                      .alertsList[index].image
-                                                      .toString(),
-                                                  width: Get.width * 0.2,
-                                                )
-                                              : videoimageviw(
-                                                  link: controller
-                                                      .alertsList[index]
-                                                      .video!)),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+              : controller.IssubLoding
+                  ? Center(
+                      child: LinearProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                  : controller.IsSubscribe
+                      ? SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 50,
+                              ),
+                              TopAppBar(title: "Alerts"),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                height:
+                                    MediaQuery.of(context).size.height - 100,
+                                child: ListView.builder(
+                                  itemCount: controller.alertsList.length,
+                                  itemBuilder: (context, index) => InkWell(
+                                    onTap: () {
+                                      Get.to(() => alertsDetails(
+                                          image: controller
+                                              .alertsList[index].image
+                                              .toString(),
+                                          video: controller
+                                              .alertsList[index].video
+                                              .toString(),
+                                          body: controller
+                                              .alertsList[index].description
+                                              .toString(),
+                                          senttime: controller
+                                              .alertsList[index].sendTime
+                                              .toString(),
+                                          title: controller
+                                              .alertsList[index].name
+                                              .toString()));
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.all(10),
+                                      child: Row(
                                         children: [
-                                          Text(
-                                            controller.alertsList[index].name
-                                                .toString(),
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
+                                          ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              child: controller
+                                                          .alertsList[index]
+                                                          .image !=
+                                                      null
+                                                  ? Image.network(
+                                                      controller
+                                                          .alertsList[index]
+                                                          .image
+                                                          .toString(),
+                                                      width: Get.width * 0.2,
+                                                    )
+                                                  : videoimageviw(
+                                                      link: controller
+                                                          .alertsList[index]
+                                                          .video!)),
+                                          const SizedBox(
+                                            width: 20,
                                           ),
-                                          Text(
-                                            controller
-                                                .alertsList[index].sendTime
-                                                .toString(),
-                                            style: TextStyle(
-                                                color: AppColors.gold,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400),
-                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                controller
+                                                    .alertsList[index].name
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Text(
+                                                controller
+                                                    .alertsList[index].sendTime
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: AppColors.gold,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ],
+                                          )
                                         ],
-                                      )
-                                    ],
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  : subscribe()),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                            ],
+                          ),
+                        )
+                      : subscribe()),
     );
   }
 }

@@ -107,7 +107,14 @@ class home extends StatelessWidget {
                   ),
                 ),
                 controller.dailyAdsList.isEmpty
-                    ? Center(child: CircularProgressIndicator())
+                    ? Center(
+                        child: Text(
+                        "No Data",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ))
                     : SizedBox(
                         height: 250,
                         // width: 250,
@@ -202,7 +209,15 @@ class home extends StatelessWidget {
                   ),
                 ),
                 controller.traininList.isEmpty
-                    ? Center(child: CircularProgressIndicator())
+                    ? Center(
+                        child: Text(
+                        "No Data",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ))
+                    // Center(child: CircularProgressIndicator())
                     : SizedBox(
                         height: 250,
                         // width: 250,
@@ -256,7 +271,15 @@ class home extends StatelessWidget {
                   ),
                 ),
                 controller.weeklyMagazineList.isEmpty
-                    ? Center(child: CircularProgressIndicator())
+                    ? Center(
+                        child: Text(
+                        "No Data",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ))
+                    //Center(child: CircularProgressIndicator())
                     : SizedBox(
                         height: 165,
                         child: ListView.builder(
@@ -345,7 +368,15 @@ class home extends StatelessWidget {
                   ),
                 ),
                 controller.teamList.isEmpty
-                    ? Center(child: CircularProgressIndicator())
+                    ? Center(
+                        child: Text(
+                        "No Data",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ))
+                    //Center(child: CircularProgressIndicator())
                     : SizedBox(
                         height: 250,
                         child: ListView.builder(

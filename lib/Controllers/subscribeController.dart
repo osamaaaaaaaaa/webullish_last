@@ -28,7 +28,7 @@ class subscribeController extends GetxController {
       )
           .then((value) {
         if (value.isNotEmpty && value['error'] != null) {
-          //AppHelper.errorsnackbar("user:${value['error']}");
+          AppHelper.errorsnackbar("user:${value['error']}");
 
           return;
         }

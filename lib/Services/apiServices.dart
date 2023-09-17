@@ -160,7 +160,7 @@ class apiServices {
 
         return responsebody;
       } else {
-        return {"error": response.statusCode};
+        return {"error": response.body};
       }
     } catch (e) {
       return {"error": e};

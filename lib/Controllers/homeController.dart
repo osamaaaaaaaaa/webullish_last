@@ -42,7 +42,7 @@ class homeController extends GetxController {
     gettrainingAds();
     getWeeklyMagazine();
     getAcheviments();
-    //   getTeams();
+    getTeams();
     getPerformance();
     getUserProfile();
     getInstaLive();

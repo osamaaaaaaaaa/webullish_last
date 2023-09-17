@@ -25,8 +25,8 @@ class FaqScreen extends StatelessWidget {
               builder: (context) {
                 if (controller.faqsLoading) {
                   return Center(
-                    child: CupertinoActivityIndicator(
-                      color: Color(0xff2C2C2E),
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
                     ),
                   );
                 }
