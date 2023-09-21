@@ -21,7 +21,9 @@ Widget weeklyMagazine({required image, required title}) => Container(
                         return child;
                       }
                       return Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                        ),
                       );
                     },
                   ),

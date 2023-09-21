@@ -74,7 +74,7 @@ class alerts extends StatelessWidget {
                                                           .toString(),
                                                       width: Get.width * 0.2,
                                                     )
-                                                  : videoimageviww(
+                                                  : videoimageviww2(
                                                       link: controller
                                                           .alertsList[index]
                                                           .video!)),
