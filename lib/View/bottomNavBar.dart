@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:webullish/Controllers/AlertsController.dart';
+import 'package:webullish/Controllers/faq_controller.dart';
 import 'package:webullish/Controllers/homeController.dart';
+import 'package:webullish/Controllers/settingsController.dart';
 
 class bottomNavBar extends StatelessWidget {
+  alertsController alert = Get.put(alertsController());
+  settingsController sett = Get.put(settingsController());
+  FaqController faq = Get.put(FaqController());
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<homeController>(

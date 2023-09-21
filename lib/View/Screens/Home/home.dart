@@ -135,7 +135,7 @@ class home extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(50)),
                                 child: videoimageviw(
-                                    link: controller.dailyAdsList[index].video
+                                    image: controller.dailyAdsList[index].image
                                         .toString()),
                               ),
                             ),
@@ -238,7 +238,7 @@ class home extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(50)),
                                 child: videoimageviw(
-                                    link: controller.traininList[index].video
+                                    image: controller.traininList[index].image
                                         .toString()),
                               ),
                             ),
@@ -448,7 +448,10 @@ _setting({required context}) => showMaterialModalBottomSheet(
             children: [
               InkWell(
                 onTap: () async {
-                  GetStorage().erase();
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
+                  preferences.clear();
+
                   Get.offAll(() => login());
                 },
                 child: Row(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webullish/Controllers/homeController.dart';
 import 'package:webullish/Models/CountriesModel.dart';
 import 'package:webullish/Models/UserModel.dart';
@@ -22,9 +23,23 @@ class authController extends GetxController {
   int? countryId;
   int? cityId;
   authController() {
+    init();
+
     getCountries();
   }
+
+  init() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('email') == null) {
+      return;
+    }
+    signin(
+        email: prefs.getString('email').toString(),
+        password: prefs.getString('password').toString());
+  }
+
   signin({required email, required password}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     _loading();
     User model = User(email: email, password: password);
 
@@ -44,6 +59,9 @@ class authController extends GetxController {
           "email": email.toString().trim(),
           "password": password.toString().trim()
         });
+        prefs.setString("email", email.toString().trim());
+        prefs.setString("password", password.toString().trim());
+        await prefs.setBool('islogin', true);
 
         homeController().handleBootmNabBar(0);
 
@@ -58,6 +76,8 @@ class authController extends GetxController {
   }
 
   signup({required name, required email, required password}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     _loading();
     User model = User(
         name: name,
@@ -83,6 +103,10 @@ class authController extends GetxController {
           "email": email.toString().trim(),
           "password": password.toString().trim()
         });
+        prefs.setString("email", email.toString().trim());
+        prefs.setString("password", password.toString().trim());
+        await prefs.setBool('islogin', true);
+
         _box.write(StorageKey.userdata, value);
         _box.write(StorageKey.token, value['access_token']);
         homeController().handleBootmNabBar(0);

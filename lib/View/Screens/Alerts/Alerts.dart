@@ -44,14 +44,11 @@ class alerts extends StatelessWidget {
                                     onTap: () {
                                       Get.to(() => alertsDetails(
                                           image: controller
-                                              .alertsList[index].image
-                                              .toString(),
+                                              .alertsList[index].image,
                                           video: controller
-                                              .alertsList[index].video
-                                              .toString(),
+                                              .alertsList[index].video,
                                           body: controller
-                                              .alertsList[index].description
-                                              .toString(),
+                                              .alertsList[index].description,
                                           senttime: controller
                                               .alertsList[index].sendTime
                                               .toString(),
@@ -77,7 +74,7 @@ class alerts extends StatelessWidget {
                                                           .toString(),
                                                       width: Get.width * 0.2,
                                                     )
-                                                  : videoimageviw(
+                                                  : videoimageviww(
                                                       link: controller
                                                           .alertsList[index]
                                                           .video!)),

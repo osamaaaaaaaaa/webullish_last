@@ -3,13 +3,14 @@ class trainingModel {
   String? videoTitle;
   String? videoDescription;
   String? simpleDescription;
-  String? video;
+  String? video, image;
 
   trainingModel(
       {this.id,
       this.videoTitle,
       this.videoDescription,
       this.simpleDescription,
+      this.image,
       this.video});
 
   trainingModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +19,7 @@ class trainingModel {
     videoDescription = json['video_description'];
     simpleDescription = json['simple_description'];
     video = json['video'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {

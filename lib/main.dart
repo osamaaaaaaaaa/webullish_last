@@ -52,13 +52,8 @@ class app extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialBinding: bindings(),
-      home: onboard != 0
-          ? const PageOnBorarding()
-          : islogin == true
-              ? bottomNavBar()
-              : login(),
-    );
+        debugShowCheckedModeBanner: false,
+        initialBinding: bindings(),
+        home: onboard != 0 ? const PageOnBorarding() : login());
   }
 }

@@ -8,7 +8,7 @@ import 'package:webullish/utils/AppColors.dart';
 
 // ignore: must_be_immutable
 class alertsDetails extends StatelessWidget {
-  late String image, video, title, senttime, body;
+  String? image, video, title, senttime, body;
   alertsDetails(
       {Key? key,
       required this.image,
@@ -33,14 +33,14 @@ class alertsDetails extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            image.isEmpty
+            image == null
                 ? InkWell(
                     onTap: () {
-                      Get.to(() => OneVideoCtrl(name: '', url: video));
+                      Get.to(() => OneVideoCtrl(name: '', url: video!));
                     },
-                    child: videoimageviw(link: video))
+                    child: videoimageviww(link: video!))
                 : Image.network(
-                    image,
+                    image!,
                     height: MediaQuery.of(context).size.height * 0.3,
                   ),
             SizedBox(
@@ -60,7 +60,7 @@ class alertsDetails extends StatelessWidget {
               margin: EdgeInsets.only(top: 10),
               alignment: Alignment.centerLeft,
               child: Text(
-                title,
+                title.toString(),
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
@@ -84,7 +84,7 @@ class alertsDetails extends StatelessWidget {
                   margin: EdgeInsets.only(top: 10),
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    body,
+                    body.toString(),
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
@@ -110,7 +110,7 @@ class alertsDetails extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      senttime,
+                      senttime.toString(),
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
